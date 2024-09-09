@@ -50,7 +50,7 @@ const Register = () => {
           </div>
           <div className="w-full">
             <div>
-              <Button className="w-full bg-white text-black hover:bg-gray-100 rounded-sm">
+              <Button className="w-full bg-white text-black hover:bg-gray-100 rounded-sm" onClick={() => router.push("/home")}>
                 Entrar
               </Button>
             </div>
