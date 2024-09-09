@@ -1,3 +1,4 @@
+import Footer from "@/components/myComponents/footer/footer"
 import Header from "@/components/myComponents/header/header"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 
@@ -47,6 +48,9 @@ const Profile = () => {
               </CardContent>
             </Card>
           </div>
+        </div>
+        <div>
+        <Footer/>
         </div>
       </div>
     );

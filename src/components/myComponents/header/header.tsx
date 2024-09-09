@@ -3,11 +3,11 @@ import { cn } from "@/lib/utils"
 import Link from "next/link"
 
 const Header = () => {
-    const headerButtons = ["Profile","Next Matches", "Create Match", "Logout"]
+    const headerButtons = ["Profile","Your Matches", "Create Match", "Logout"]
 
     return(
         <div className="w-full h-40 text-white bg-gray-700 flex flex-col items-center justify-center">
-            <div className="text-5xl font-semibold p-6">Hoops</div>
+            <Link href={"/home"} className="text-5xl font-semibold p-6">Hoops</Link>
             <div className="flex">
             {headerButtons.map((item, index) => (
             <Link
