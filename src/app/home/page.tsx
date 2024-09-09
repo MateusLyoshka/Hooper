@@ -56,14 +56,14 @@ const Home = () => {
           </div>
           <div className="mt-10 p-2">
             <Card className="p-4">
-              <CardHeader className="p-3 text-3xl">Upcoming matches</CardHeader>
+              <CardHeader className="p-3 text-3xl">Last status</CardHeader>
               <div className="w-full bg-gray-500 h-[1px] opacity-50 mb-4"></div>
               <CardContent>
                 <div className="mt-2">
                   <div className="space-y-1">
                     <div>
-                      Last Game: Team{recentGame.teamA} {recentGame.pointsA} vs
-                      Team {recentGame.pointsB} {recentGame.teamB}
+                      Last Game: Team {recentGame.teamA} {recentGame.pointsA} vs
+                      Team {recentGame.teamB} {recentGame.pointsB}
                     </div>
                     <div>Points Scored: {recentGame.score}</div>
                     <div>Assists: {recentGame.assists}</div>
