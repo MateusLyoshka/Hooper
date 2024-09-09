@@ -12,7 +12,7 @@ const Header = () => {
             {headerButtons.map((item, index) => (
             <Link
               key={index}
-              href={`/home/${item.toLowerCase()}`}
+              href={`/home/${item.toLowerCase().replace(" ", '')}`}
               className={cn(buttonVariants({ variant: "ghost" }), "p-8 hover:bg-opacity-5 hover:bg-white hover:text-white rounded-none")}
             >
               {item}
