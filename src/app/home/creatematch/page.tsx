@@ -25,7 +25,6 @@ const CreateMatch = () => {
       court,
       playerSex,
     };
-
     console.log("Match Data:", matchData);
   };
 
