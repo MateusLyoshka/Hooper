@@ -2,6 +2,7 @@ import { FastifyInstance, FastifyPluginOptions, FastifyRequest, FastifyReply} fr
 import { CreatePlayerController } from "../Controllers/CreatePlayerController";
 import { ListPlayerController } from "../Controllers/ListPlayerControllers";
 import { DeletePlayerController } from "../Controllers/DeletePlayerController";
+
 export async function routes(fastify: FastifyInstance, options: FastifyPluginOptions){
 
 // WASAAAAAAAAA

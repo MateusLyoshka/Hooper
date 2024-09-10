@@ -1,8 +1,11 @@
 import prismaClient from "../prisma";
 
+
 interface DeletePlayerProps {
     playerId: string;
 }
+
+eletePlayerService };
 
 class DeletePlayerService {
     async execute({ playerId }: DeletePlayerProps) {
