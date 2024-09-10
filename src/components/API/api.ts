@@ -1,7 +1,6 @@
 "use server";
 
 import prisma from "@/db/db";
-import axios from "axios"
 
 const CreatePlayer = async (data:any) => {
     try{
@@ -34,8 +33,8 @@ const CreatePlayer = async (data:any) => {
         })
         return response
     }catch (error) {
-        if (axios.isAxiosError(error)) {
-            console.error("Erro na solicitação:", error.response?.data);
+        if (error) {
+            console.error("Erro na solicitação:", error);
         } else {
             console.error("Erro desconhecido:", error);
         }
