@@ -5,8 +5,6 @@ interface DeletePlayerProps {
     playerId: string;
 }
 
-eletePlayerService };
-
 class DeletePlayerService {
     async execute({ playerId }: DeletePlayerProps) {
         if (!playerId) {
