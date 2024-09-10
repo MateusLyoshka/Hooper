@@ -2,6 +2,7 @@ import { FastifyInstance, FastifyPluginOptions, FastifyRequest, FastifyReply} fr
 import { CreatePlayerController } from "../Controllers/CreatePlayerController";
 import { ListPlayerController } from "../Controllers/ListPlayerControllers";
 import { DeletePlayerController } from "../Controllers/DeletePlayerController";
+import { LoginController } from "../Controllers/LoginController"; // Import the LoginController class
 
 export async function routes(fastify: FastifyInstance, options: FastifyPluginOptions){
 
@@ -24,4 +25,10 @@ fastify.get("/player", async (request: FastifyRequest, reply: FastifyReply) => {
 fastify.delete("/player/:playerId", async (request: FastifyRequest, reply: FastifyReply) => {
     return await new DeletePlayerController().handle(request, reply);
 })
+
+const loginController = new LoginController(); // Create an instance of LoginController
+
+fastify.post('/login', async (request: FastifyRequest, reply: FastifyReply) => {
+    return loginController.handle(request, reply);
+});
 }
