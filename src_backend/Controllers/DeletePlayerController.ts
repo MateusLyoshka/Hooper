@@ -1,12 +1,25 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 import { DeletePlayerService } from "../services/DeletePlayerService";
+
 class DeletePlayerController {
     async handle(request: FastifyRequest, reply: FastifyReply) {
-        const {playerId} = request.query as {playerId: string};
+        // Extrair playerId dos parâmetros da rota
+        const { playerId } = request.params as { playerId: string };
 
-        const costumerService = new DeletePlayerService();
-        const player = await costumerService.execute({playerId});
-        reply.send(player);
+        // Verifica se o playerId foi fornecido
+        if (!playerId) {
+            reply.status(400).send({ error: "playerId é obrigatório" });
+            return;
+        }
+
+        try {
+            const deletePlayerService = new DeletePlayerService();
+            const response = await deletePlayerService.execute({ playerId });
+            reply.send(response);
+        } catch (error) {
+            reply.status(500).send({ error: (error as Error).message });
+        }
+    }
 }
-}
+
 export { DeletePlayerController };
