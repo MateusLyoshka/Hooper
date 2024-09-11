@@ -19,10 +19,11 @@ model player {
     confirmEmail   String    @db.VarChar(255)
     createdAt      DateTime  @default(now())
     updatedAt      DateTime  @default(now())
-
+    isAdmin        Boolean   @default(true)
     stats          stats[]
 
     @@map("players")
+    match match[]
 }
 
 model stats {
@@ -39,5 +40,27 @@ model stats {
     dominantHand String   @db.VarChar(255)
 
     player      player   @relation(fields: [playerId], references: [playerId])
+}
+
+model match {
+  matchId        String   @id @db.Uuid @default(uuid())
+  teamA          String   @db.VarChar(255)
+  teamB          String   @db.VarChar(255)
+  teamAPlayers   String[]
+  teamBPlayers   String[]
+  typeMatch      String   @db.VarChar(255)
+  local          String   @db.VarChar(255)
+  day            String   @db.VarChar(255)
+  month          String   @db.VarChar(255)
+  year           String   @db.VarChar(255)
+  time           String   @db.VarChar(255)
+  mode           String   @db.VarChar(255)
+  court          String   @db.VarChar(255)
+  matchduration  String   @db.VarChar(255)
+  matchover      Boolean  @default(false)
+  statusdefined  Boolean  @default(false)
+  playerId       String   @db.Uuid 
+
+  player         player   @relation(fields: [playerId], references: [playerId])
 }
 

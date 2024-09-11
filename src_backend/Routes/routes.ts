@@ -3,6 +3,8 @@ import { CreatePlayerController } from "../Controllers/CreatePlayerController";
 import { ListPlayerController } from "../Controllers/ListPlayerControllers";
 import { DeletePlayerController } from "../Controllers/DeletePlayerController";
 import { LoginController } from "../Controllers/LoginController"; // Import the LoginController class
+import Match from "@/app/home/yourmatches/[id]/page";
+import { CreateMatchController } from "../Controllers/CreateMatchController";
 
 export async function routes(fastify: FastifyInstance, options: FastifyPluginOptions){
 
@@ -30,5 +32,9 @@ const loginController = new LoginController(); // Create an instance of LoginCon
 
 fastify.post('/login', async (request: FastifyRequest, reply: FastifyReply) => {
     return loginController.handle(request, reply);
+});
+
+fastify.post('/match', async (request: FastifyRequest, reply: FastifyReply) => {
+    return new CreateMatchController().handle(request, reply);
 });
 }
