@@ -20,12 +20,16 @@ const Match = () => {
     time: "18:50",
     mode: "5x5",
     court: "aberta",
+    matchduration: 0,
+    matchover: "false",
+    statusdefined: "false",
   };
 
   // Estados para controlar o cronômetro
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
+  const [isDataSended, setIsDataSended] = useState(false);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -45,7 +49,9 @@ const Match = () => {
 
   // Função para iniciar ou pausar o cronômetro
   const handleStartPause = () => {
-    setIsRunning(!isRunning);
+    if (!isFinished) {
+      setIsRunning(!isRunning);
+    }
   };
 
   // Função para finalizar a partida
@@ -83,25 +89,52 @@ const Match = () => {
               <div className="mt-4">
                 {/* Exibe o tempo do cronômetro */}
                 <div className="text-2xl">
-                  Tempo: {Math.floor(time / 60)}:{time % 60 < 10 ? `0${time % 60}` : time % 60}
+                  Tempo: {Math.floor(time / 60)}:
+                  {time % 60 < 10 ? `0${time % 60}` : time % 60}
                 </div>
-                <div className="mt-4">
+                <div className="mt-4 flex">
                   {!isFinished ? (
                     <Button
                       onClick={handleStartPause}
-                      className="bg-blue-500 text-white px-4 py-2 rounded"
+                      className={
+                        isRunning
+                          ? "bg-blue-500 text-white px-4 py-2 rounded"
+                          : "bg-orange-400 text-white px-4 py-2 cursor-not-allowed"
+                      }
+                      disabled={isFinished}
                     >
                       {isRunning ? "Pausar" : "Iniciar"}
                     </Button>
                   ) : null}
-                  {isRunning === false && time > 0 && !isFinished ? (
+                  {isFinished ? (
+                    <div className="mr-4">
+                      <Button
+                      onClick={() => (setIsDataSended(true))}
+                        className={
+                          isDataSended
+                            ? "bg-gray-500 text-gray-300 px-4 py-2 rounded cursor-not-allowed"
+                            : "bg-green-500 text-white px-4 py-2 rounded"
+                        }
+                        disabled={isDataSended}
+                      >
+                        Definir status dos jogadores
+                      </Button>
+                    </div>
+                  ):null}
+                  {!isRunning && time > 0 ? (
                     <Button
                       onClick={handleFinish}
-                      className="bg-red-500 text-white px-4 py-2 rounded ml-4"
+                      className={
+                        isFinished
+                          ? "bg-gray-500 text-gray-300 px-4 py-2 rounded cursor-not-allowed"
+                          : "bg-red-500 text-white px-4 py-2 rounded ml-4"
+                      }
+                      disabled={isFinished}
                     >
                       Finalizar Partida
                     </Button>
                   ) : null}
+                  
                 </div>
               </div>
             </CardContent>
