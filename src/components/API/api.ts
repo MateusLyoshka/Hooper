@@ -1,8 +1,9 @@
 "use server";
 
 import prisma from "@/db/db";
+import { player, stats } from "@prisma/client";
 
-const CreatePlayer = async (data:any) => {
+export const CreatePlayer = async (data:any) => {
     try{
         const response = await prisma.player.create({
             data: {
@@ -41,4 +42,36 @@ const CreatePlayer = async (data:any) => {
     }
 }
 
-export default CreatePlayer
+export const updatePlayer = async(id: string, player: player) => {
+    try{
+        const response = await prisma.player.update({
+            where: {
+                playerId: id
+            },
+            data:{
+                ...player
+            },
+            include:{
+                stats:true
+            }
+        })
+        return response
+    }catch(error){
+        console.log(error)
+    }
+}
+export const updateStats = async(id: string, stats: stats) => {
+    try{
+        const response = await prisma.stats.updateMany({
+            where: {
+                playerId: id
+            },
+            data:{
+                ...stats
+            },
+        })
+        return response
+    }catch(error){
+        console.log(error)
+    }
+}
