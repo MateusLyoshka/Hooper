@@ -16,6 +16,7 @@ model Player {
     password        String    @db.VarChar(255)
     confirmPassword String    @db.VarChar(255)
     confirmEmail    String    @db.VarChar(255)
+    isAdmin         Boolean   
     createdAt       DateTime  @default(now())
     updatedAt       DateTime  @default(now())
 
@@ -34,6 +35,18 @@ model Game {
     gameName   String      @db.VarChar(255)
     startTime  DateTime
     endTime    DateTime?
+    teamA      String      @db.VarChar(255)
+    teamB      String      @db.VarChar(255)
+    teamAplayers String[]
+    teamBplayers String[]
+    type       String      @db.VarChar(255)
+    mode       String      @db.VarChar(255)
+    court      String      @db.VarChar(255)
+    matchDuration Int
+    matchOver  Boolean    @default(false)
+    gameDate   String     @db.VarChar(255)
+    createdAt  DateTime   @default(now())
+    updatedAt  DateTime   @default(now())
 
     // Relação muitos-para-muitos com player via tabela intermediária
     players    PlayerGame[]

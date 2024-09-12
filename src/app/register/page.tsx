@@ -6,17 +6,21 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { CreatePlayer } from "@/components/API/api";
+import { Checkbox } from "@/components/ui/checkbox";
 
 
 const Register = () => {
+  const [isChecked, setIsChecked] = useState(false)
   const [formData, setFormData] = useState({
     nomePlayer: "",
+    numeroCelular: "",
     email: "",
-    confirmEmail: "",
     CPF: "",
     password: "",
     confirmPassword: "",
-    numeroCelular: "",
+    confirmEmail: "",
+    statId: null,
+    isAdmin: false
   });
 
   const router = useRouter();
@@ -28,9 +32,18 @@ const Register = () => {
     });
   };
 
+  const handleCheckboxChange = (checked: boolean) => {
+    setIsChecked(checked);
+    setFormData({
+      ...formData,
+      isAdmin: checked, // Atualiza o campo isAdmin no formData
+    });
+  };
+
   const handleRegister = async() => {
-    const reponse = await CreatePlayer("a")
+    const reponse = await CreatePlayer(formData)
     console.log(reponse)
+    router.push("/login")
   }
 
   return (
@@ -94,6 +107,13 @@ const Register = () => {
                 onChange={handleInputChange}
               />
             </div>
+            <div className="flex">
+            <Checkbox
+                  checked={isChecked} // Estado associado ao checked
+                  onCheckedChange={handleCheckboxChange} // Atualiza isChecked e formData.isAdmin
+                />
+              <div>Tonar-se gerenciador de partidas</div>
+            </div>
           </div>
           <div className="w-full">
             <Button
@@ -107,7 +127,6 @@ const Register = () => {
               <Button
                 variant={"link"}
                 className="p-0 items-start"
-                onClick={() => router.push("/login")}
               >
                 Faça login
               </Button>

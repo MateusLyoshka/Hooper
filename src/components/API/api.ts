@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/db/db";
-import { Player, Stats } from "@prisma/client";
+import { Player, Stats, Game } from "@prisma/client";
 import { JWT_SECRET } from "@/app/config/config"
 import jwt from 'jsonwebtoken'; // Import the 'jwt' module
 
@@ -16,6 +16,7 @@ export const CreatePlayer = async (player: Partial<Player>) => {
                 password: player.password ?? "",
                 confirmPassword: player.confirmPassword ?? "",
                 confirmEmail: player.confirmEmail ?? "",
+                isAdmin: player.isAdmin ??  false,
                 stat: {
                     create: {
                         gamesplayed: 0,
@@ -140,4 +141,48 @@ export const DeletePlayer = async(id: string) => {
     }
 }
 
+export const createGame = async(playerId: string, gameData: Partial<Game>) => {
+    try{
+        const player = await prisma.player.findUnique({
+            where:{ playerId: playerId },
+        });
+        
+        if(!player){
+            throw new Error("Jogador não encontrado")
+        }
 
+        if (!player || !player.isAdmin) {
+            throw new Error("Apenas administradores podem criar partidas.");
+        }
+
+const createGame = await prisma.game.create({
+    data: {
+        gameName: gameData.gameName ?? "",
+        startTime: gameData.startTime ?? new Date(),
+        endTime: gameData.endTime ?? new Date(),
+        teamA: gameData.teamA ?? "",
+        teamB: gameData.teamB ?? "",
+        teamAplayers: gameData.teamAplayers ?? [],
+        teamBplayers: gameData.teamBplayers ?? [],
+        type: gameData.type ?? "",
+        mode: gameData.mode ?? "",
+        court: gameData.court ?? "",
+        matchDuration: gameData.matchDuration ?? 0,
+        matchOver: gameData.matchOver ?? false,
+        gameDate: gameData.gameDate ?? "",
+    },
+});
+
+console.log("Jogo criado com sucesso:", createGame); 
+        await prisma.playerGame.create({
+            data: {
+                playerId: playerId,
+                gameId: createGame.gameId, 
+            },
+        });
+
+    return createGame;
+    } catch(error) { 
+    console.log(error)
+    }
+}

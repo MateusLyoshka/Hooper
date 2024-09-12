@@ -8,6 +8,7 @@ CREATE TABLE "players" (
     "password" VARCHAR(255) NOT NULL,
     "confirmPassword" VARCHAR(255) NOT NULL,
     "confirmEmail" VARCHAR(255) NOT NULL,
+    "isAdmin" BOOLEAN NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "statId" UUID,
@@ -21,6 +22,18 @@ CREATE TABLE "games" (
     "gameName" VARCHAR(255) NOT NULL,
     "startTime" TIMESTAMP(3) NOT NULL,
     "endTime" TIMESTAMP(3),
+    "teamA" VARCHAR(255) NOT NULL,
+    "teamB" VARCHAR(255) NOT NULL,
+    "teamAplayers" TEXT[],
+    "teamBplayers" TEXT[],
+    "type" VARCHAR(255) NOT NULL,
+    "mode" VARCHAR(255) NOT NULL,
+    "court" VARCHAR(255) NOT NULL,
+    "matchDuration" INTEGER NOT NULL,
+    "matchOver" BOOLEAN NOT NULL DEFAULT false,
+    "gameDate" VARCHAR(255) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "games_pkey" PRIMARY KEY ("gameId")
 );
