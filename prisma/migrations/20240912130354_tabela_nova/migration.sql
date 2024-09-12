@@ -78,4 +78,4 @@ ALTER TABLE "players" ADD CONSTRAINT "players_statId_fkey" FOREIGN KEY ("statId"
 ALTER TABLE "players_games" ADD CONSTRAINT "players_games_playerId_fkey" FOREIGN KEY ("playerId") REFERENCES "players"("playerId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "players_games" ADD CONSTRAINT "players_games_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "games"("gameId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "players_games" ADD CONSTRAINT "players_games_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "games"("gameId") ON DELETE CASCADE ON UPDATE CASCADE;

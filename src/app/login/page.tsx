@@ -11,8 +11,9 @@ export default function Login() {
   const [email, setEmail] = useState("")
   const [senha, setSenha] = useState("")
 
-  const handleLogin = () => {
-    const response = LoginPlayerApi(email, senha)
+  const handleLogin = async () => {
+    const response = await LoginPlayerApi(email, senha)
+    console.log(response)
     router.push('/home')
   }
 

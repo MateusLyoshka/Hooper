@@ -51,7 +51,7 @@ model Game {
     // Relação muitos-para-muitos com player via tabela intermediária
     players    PlayerGame[]
 
-    @@map("games")
+    @@map("games")  
 }
 
 // Tabela intermediária para a relação muitos-para-muitos entre player e game
@@ -60,7 +60,7 @@ model PlayerGame {
     gameId     String   @db.Uuid
 
     player     Player   @relation(fields: [playerId], references: [playerId])
-    game       Game     @relation(fields: [gameId], references: [gameId])
+    game       Game     @relation(fields: [gameId], references: [gameId], onDelete: Cascade)
 
     @@id([playerId, gameId]) // Definir chave composta para garantir unicidade
     @@map("players_games")   // Nome da tabela no banco de dados

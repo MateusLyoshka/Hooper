@@ -1,4 +1,4 @@
-import { CreatePlayer, DeletePlayer, GetPlayerById, LoginPlayerApi } from "@/components/API/api";
+import { addStatsMatchOver, CreatePlayer, deleteGame, DeletePlayer, GetPlayerById, joinTeamA, joinTeamB, LoginPlayerApi, removePlayerFromTeamA, updateStats } from "@/components/API/api";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Player } from "@prisma/client";
@@ -6,6 +6,7 @@ import { stat } from "fs";
 import jwt from 'jsonwebtoken'; // Import the 'jwt' module
 import { Delete } from "lucide-react";
 import { createGame } from "@/components/API/api";
+import { join } from "path";
 
 export default function Home() {
   type player2 = {
@@ -74,7 +75,7 @@ export default function Home() {
     const response = await LoginPlayerApi(email, senha)
     console.log("marcos o filho da puta:",response)
   }
-  login()
+  //login()
   
   const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF5ZXJJZCI6IjVmYzI5MzhlLTc0NWYtNDYwMi05YjM2LWEyMTQ5ODg5ZGU2OCIsImVtYWlsIjoicm9nZXJpc28uY2Fuc2kyc3M1c2V4YW1wbGUuY29tIiwiaWF0IjoxNzI2MDg4NjY0LCJleHAiOjE3MjYwOTIyNjR9.Mrc6w198wiM0VfyczehWf5Vg5-islC9UAj9o7pBQmE8'
   const secret_key = 'cococulos'
@@ -89,7 +90,7 @@ export default function Home() {
 //GetPlayerById("07884de0-c5df-4424-8d13-d6708bd8aa1c")
 
 const FerasDoBasquete = {
-  gameName: "Feras do Basquete as Lendas os Feras",
+  gameName: "novo jogo",
   startTime: new Date(),
   teamA: "Time A",
   teamB: "Time B",
@@ -101,13 +102,34 @@ const FerasDoBasquete = {
   gameDate: "12/09/2024", // Data da partida
 
   // Jogadores (substitua pelos jogadores reais)
-  teamAplayers: ["Jogador1", "Jogador2", "Jogador3"],
-  teamBplayers: ["Jogador4", "Jogador5", "Jogador6"],
+  teamAplayers: [],
+  teamBplayers: [],
 };
 
 // Os Feras do Basquete estão prontos para entrar em quadra! 🏀🔥
-console.log("Feras do Basquete criados:", FerasDoBasquete);
-//createGame("2846c21c-4732-4f40-8ae7-fa1b16d2f12c", FerasDoBasquete)
+//console.log("Feras do Basquete criados:", FerasDoBasquete);
+//createGame("2a642e8b-49c5-42f0-9ecf-5fe94f8d7c3e", FerasDoBasquete)
+
+
+//joinTeamA("aba013b0-ffe4-4200-9bf9-afb00f4fb9a8","51776743-4060-4a3e-8ba0-924ada36b627")
+//joinTeamB("329f53e0-6060-400c-b1e7-5402f4d09eb1","fca069a5-327b-4ce5-81c1-a4c9a17a5d18")
+//deleteGame("26e8bdac-f826-4c11-80e4-2e7c9422b882")
+//removePlayerFromTeamA("aba013b0-ffe4-4200-9bf9-afb00f4fb9a8","51776743-4060-4a3e-8ba0-924ada36b627")
+const PlayerStats = {
+  gamesplayed: 10,
+  gameswon: 5,
+  points: 100,
+  assists: 50,
+  rebounds: 30,
+  blocks: 20,
+
+
+};
+
+//updateStats("aba013b0-ffe4-4200-9bf9-afb00f4fb9a8", PlayerStats)
+
+addStatsMatchOver("2a642e8b-49c5-42f0-9ecf-5fe94f8d7c3e", "aba013b0-ffe4-4200-9bf9-afb00f4fb9a8", PlayerStats)
+
 
 
   return (

@@ -64,7 +64,7 @@ export const updatePlayer = async(id: string, player: Player) => {
         console.log(error)
     }
 }
-export const updateStats = async(id: string, stats: Stats) => {
+export const updateStats = async(id: string, stats: Partial<Stats>) => {
     try{
         const response = await prisma.stats.updateMany({
             where: {
@@ -186,3 +186,200 @@ console.log("Jogo criado com sucesso:", createGame);
     console.log(error)
     }
 }
+
+export const joinTeamA = async(playerId: string, gameId: string) => {
+    try{
+        const player = await prisma.player.findUnique({
+            where: { playerId: playerId }
+        });
+        if(!player){
+            throw new Error("Jogador não encontrado")
+        }
+
+        const game = await prisma.game.findUnique({
+            where: { gameId: gameId }
+        });
+        if(!game){
+            throw new Error("Partida não encontrada")
+        }
+
+        if(game.teamAplayers.length >= 5){
+            throw new Error("Time A já está completo")
+        }
+
+        await prisma.game.update({
+            where: { gameId: gameId },
+            data: {
+                teamAplayers: {
+                    push: playerId
+                }
+            }
+        });
+
+        return game
+    }catch(error){
+        console.log(error)
+    }
+}
+
+export const joinTeamB = async(playerId: string, gameId: string) => {
+    try{
+        const player = await prisma.player.findUnique({
+            where: { playerId: playerId }
+        });
+        if(!player){
+            throw new Error("Jogador não encontrado")
+        }
+
+        const game = await prisma.game.findUnique({
+            where: { gameId: gameId }
+        });
+        if(!game){
+            throw new Error("Partida não encontrada")
+        }
+
+        if(game.teamBplayers.length >= 5){
+            throw new Error("Time B já está completo")
+        }
+
+        await prisma.game.update({
+            where: { gameId: gameId },
+            data: {
+                teamBplayers: {
+                    push: playerId
+                }
+            }
+        });
+
+        return game
+    }catch(error){
+        console.log(error)
+    }
+}
+
+export const getGames = async() => {
+    try{
+        const response = await prisma.game.findMany({
+        })
+        return response
+    }catch(error){
+        console.log(error)
+    }
+}
+
+export const getGameById = async(id: string) => {
+    try{
+        const response = await prisma.game.findUnique({
+            where:{
+                gameId: id
+            }
+        })
+        console.log(response)
+        return response
+    }catch(error){
+        console.log(error)
+    }
+}
+
+export const deleteGame = async(id: string) => {
+    try{
+        const response = await prisma.game.delete({
+            where:{
+                gameId: id
+            }
+        })
+        return response
+    }catch(error){
+        console.log(error)
+    }
+}
+
+export const removePlayerFromTeamA = async(playerId: string, gameId: string) => {
+    try{
+        const game = await prisma.game.findUnique({
+            where: { gameId: gameId }
+        });
+        if(!game){
+            throw new Error("Partida não encontrada")
+        }
+
+        await prisma.game.update({
+            where: { gameId: gameId },
+            data: {
+                teamAplayers: {
+                    set: game.teamAplayers.filter((player) => player !== playerId)
+                }
+            }
+        });
+
+        return game
+    }catch(error){
+        console.log(error)
+    }
+}
+
+export const removePlayerFromTeamB = async(playerId: string, gameId: string) => {
+    try{
+        const game = await prisma.game.findUnique({
+            where: { gameId: gameId }
+        });
+        if(!game){
+            throw new Error("Partida não encontrada")
+        }
+
+        await prisma.game.update({
+            where: { gameId: gameId },
+            data: {
+                teamBplayers: {
+                    set: game.teamBplayers.filter((player) => player !== playerId)
+                }
+            }
+        });
+
+        return game
+    }catch(error){
+        console.log(error)
+    }
+}
+
+export const addStatsMatchOver = async (adminId: string, playerId: string, stats: Partial<Stats>) => {
+    if (!adminId) {
+        throw new Error("Apenas administradores podem atualizar as estatísticas");
+    }
+
+    try {
+        // Encontre as estatísticas do jogador baseado no playerId
+        const currentStats = await prisma.stats.findFirst({
+            where: {
+                player: {
+                    playerId: playerId
+                }
+            },
+        });
+
+        if (!currentStats) {
+            throw new Error("Estatísticas do jogador não encontradas");
+        }
+
+        // Atualize as estatísticas somando as novas estatísticas com as atuais
+        const updatedStats = await prisma.stats.update({
+            where: {
+                statId: currentStats.statId,  // Usa o ID de stats para garantir que estamos atualizando o registro correto
+            },
+            data: {
+                gamesplayed: currentStats.gamesplayed + (stats?.gamesplayed ?? 0),
+                gameswon: currentStats.gameswon + (stats?.gameswon ?? 0),
+                points: currentStats.points + (stats?.points ?? 0),
+                assists: currentStats.assists + (stats?.assists ?? 0),
+                rebounds: currentStats.rebounds + (stats?.rebounds ?? 0),
+                blocks: currentStats.blocks + (stats?.blocks ?? 0),
+            },
+        });
+
+        return updatedStats;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+};
+
