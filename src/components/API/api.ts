@@ -1,35 +1,37 @@
 "use server";
 
 import prisma from "@/db/db";
-import { player, stats } from "@prisma/client";
+import { Player, Stats } from "@prisma/client";
+import { JWT_SECRET } from "@/app/config/config"
+import jwt from 'jsonwebtoken'; // Import the 'jwt' module
 
-export const CreatePlayer = async (data:any) => {
+export const CreatePlayer = async (player: Partial<Player>) => {
     try{
         const response = await prisma.player.create({
             data: {
-                nomePlayer: "Rogério Ceni",
-                numeroCelular: "+55 11 98765-4322",
-                email: "rogerio.ceni31@example.com",
-                CPF: "987.654.322-32",
-                password: "senha_forte_aqui",
-                confirmPassword: "senha_forte_aqui",
-                confirmEmail: "rogerio.ceni@example.com",
-                stats: {
+                nomePlayer: player.nomePlayer ?? "",
+                numeroCelular: player.numeroCelular ?? "",
+                email: player.email ?? "",
+                CPF: player.CPF ?? "",
+                password: player.password ?? "",
+                confirmPassword: player.confirmPassword ?? "",
+                confirmEmail: player.confirmEmail ?? "",
+                stat: {
                     create: {
-                        gamesplayed: 150,
-                        gameswon: 80,
-                        points: 2800,
-                        assists: 350,
-                        rebounds: 800,
-                        blocks: 200,
-                        position: "Goalkeeper",
-                        dominantHand: "Right",
-                        Height: "1.88",
+                        gamesplayed: 0,
+                        gameswon: 0,
+                        points: 0,
+                        assists: 0,
+                        rebounds: 0,
+                        blocks: 0,
+                        position: "",
+                        dominantHand: "",
+                        height: "",
                     }
                 }
             },
             include: {
-                stats: true,
+                stat: true,
             }
         })
         return response
@@ -42,7 +44,7 @@ export const CreatePlayer = async (data:any) => {
     }
 }
 
-export const updatePlayer = async(id: string, player: player) => {
+export const updatePlayer = async(id: string, player: Player) => {
     try{
         const response = await prisma.player.update({
             where: {
@@ -50,9 +52,10 @@ export const updatePlayer = async(id: string, player: player) => {
             },
             data:{
                 ...player
+
             },
             include:{
-                stats:true
+                stat:true
             }
         })
         return response
@@ -60,11 +63,11 @@ export const updatePlayer = async(id: string, player: player) => {
         console.log(error)
     }
 }
-export const updateStats = async(id: string, stats: stats) => {
+export const updateStats = async(id: string, stats: Stats) => {
     try{
         const response = await prisma.stats.updateMany({
             where: {
-                playerId: id
+                player: { playerId: id }
             },
             data:{
                 ...stats
@@ -75,3 +78,66 @@ export const updateStats = async(id: string, stats: stats) => {
         console.log(error)
     }
 }
+export const LoginPlayerApi = async(email:string, password:string) => {
+    const player = await prisma.player.findUnique({
+        where: {
+            email: email
+        }
+    })
+    if (!player) {
+        throw new Error("Email ou senha inválidos");
+    }
+
+    if(password !== player.password){
+        throw new Error("Email ou senha inválidos");
+    }
+
+    if(email !== player.email){
+        throw new Error("Email ou senha inválidos");
+    }
+
+
+    const token = jwt.sign({ playerId: player.playerId, email: player.email }, JWT_SECRET, { expiresIn: '1h' });
+    // console.log("player:", player, "token:", token)
+    return {player,token}
+
+}
+
+export const GetPlayers = async() => {
+    try{
+        const response = await prisma.player.findMany({
+        })
+        return response}
+        catch(error){
+        console.log(error)
+    }
+}
+
+export const GetPlayerById = async(id: string) => {
+    try{
+        const response = await prisma.player.findUnique({
+            where:{
+                playerId: id
+            }
+        })
+        console.log(response)
+        return response
+    }catch(error){
+        console.log(error)
+    }
+}
+
+export const DeletePlayer = async(id: string) => {
+    try{
+        const response = await prisma.player.delete({
+            where:{
+                playerId: id
+            }
+        })
+        return response
+    }catch(error){
+        console.log(error)
+    }
+}
+
+
