@@ -2,7 +2,6 @@
 
 
 import { motion} from 'framer-motion';
-import { Label } from "@/components/ui/label"
 import {
   Tabs,
   TabsContent,
@@ -72,13 +71,13 @@ export default function Login() {
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger
               value="login"
-              className="bg-[#1a32acff] text-white data-[state=active]:bg-[#222E73] data-[state=active]:text-white hover:bg-[#222E73]"
+              className="bg-[#1a32acff] text-white data-[state=active]:bg-[#142786] data-[state=active]:text-white hover:bg-[#142786]"
             >
               Login
             </TabsTrigger>
             <TabsTrigger
               value="signin"
-              className="bg-[#1a32acff] text-white data-[state=active]:bg-[#222E73] data-[state=active]:text-white hover:bg-[#222E73]"
+              className="bg-[#1a32acff] text-white data-[state=active]:bg-[#142786] data-[state=active]:text-white hover:bg-[#142786]"
             >
               Sign in
             </TabsTrigger>
