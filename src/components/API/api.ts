@@ -1,10 +1,8 @@
 "use server";
 
 import prisma from "@/db/db";
-import { Player, Stats, Game } from "@prisma/client";
-import { JWT_SECRET } from "@/app/config/config"
-import jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt'
+import AuthService from "@/services/authService";
 
 
 export const CreatePlayer = async (formData: FormData) => {
@@ -15,7 +13,7 @@ export const CreatePlayer = async (formData: FormData) => {
     const isGuesser = formData.get('isGuesser') === 'true'
 
     try{
-        const response = await prisma.player.create({
+        const player = await prisma.player.create({
             data: {
                 name: name,
                 email: email,
@@ -23,7 +21,8 @@ export const CreatePlayer = async (formData: FormData) => {
                 isGuesser: isGuesser
             }
         })
-        return response
+        await AuthService.createSessionToken({sub:player.Id ,name:player.name, email:player.email, guesser: player.isGuesser})
+        return 200
     }catch (error) {
         if (error) {
             console.error("Erro na solicitação:", error);
@@ -33,7 +32,7 @@ export const CreatePlayer = async (formData: FormData) => {
     }
 }
 
-export const LoginPlayerApi = async (formData: FormData) => {
+export const LoginPlayer = async (formData: FormData) => {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
     try {
@@ -51,7 +50,9 @@ export const LoginPlayerApi = async (formData: FormData) => {
             return null;
         }
         console.log("Usuário logado");
-        return player;
+        
+        await AuthService.createSessionToken({sub:player.Id ,name:player.name, email:player.email, guesser: player.isGuesser})
+        return 200
     } catch (error) {
         console.log(error);
     }

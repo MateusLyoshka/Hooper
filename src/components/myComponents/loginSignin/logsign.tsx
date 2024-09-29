@@ -1,4 +1,4 @@
-import { CreatePlayer, LoginPlayerApi } from "@/components/API/api";
+import { CreatePlayer, LoginPlayer } from "@/components/API/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
@@ -8,14 +8,14 @@ import { Card, CardContent } from "@/components/ui/card";
 export const LoginCard = ({switchTabCard}) => {
   const router = useRouter()
 
-  const loginplayer = async () => {
-    const response = await LoginPlayerApi
-    console.log(response)
+  const handleSubmit = async (formData:FormData) => {
+    const response = await LoginPlayer(formData)
+    if(response===200)router.push("/home")
   }
 
   return (
     <div>
-      <form  action={LoginPlayerApi}>
+      <form  action={handleSubmit}>
         <Card className="bg-white h-80 flex flex-col ">
           <CardContent className="space-y-6 flex flex-col items-center mt-12">
             <div className="w-full">
@@ -51,7 +51,6 @@ export const LoginCard = ({switchTabCard}) => {
                 <Button
                   className="w-full bg-gradient-to-r from-[#FDE806] to-[#F0C907] text-black rounded-sm"
                   type="submit"
-                  onClick={() => {loginplayer}}
                 >
                   Entrar
                 </Button>
@@ -78,9 +77,16 @@ export const LoginCard = ({switchTabCard}) => {
 };
 
 export const SigninCard = ({switchTabCard}) => {
+  const router = useRouter()
+
+  const handleSubmit = async (formData:FormData) => {
+    const response = await CreatePlayer(formData)
+    if(response===200)router.push("/home")
+  }
+
   return (
     <div className="">
-      <form action={CreatePlayer}>
+      <form action={handleSubmit}>
         <Card className="bg-white flex flex-col">
           <CardContent className="space-y-6 flex flex-col items-center mt-12">
             <div className="w-full">

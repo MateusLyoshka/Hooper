@@ -1,5 +1,0 @@
-blue: #222E73
-bluemed: #273273
-bluehigh: #1a32acff
-yellowsky: #F2CB05
-yellow: #F2B705

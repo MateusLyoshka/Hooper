@@ -51,8 +51,8 @@ export default function Login() {
                 className={isAnimationComplete ? 'opacity-0' : 'opacity-1'}
                 height={140}
                 width={142}
-                src="/volleyace ball.svg"
-                alt="Bola de vôlei"
+                src="/volleyace-ball.svg"
+                alt="Bola de vôlei1"
               />
             </div>
           </motion.div>
@@ -61,8 +61,8 @@ export default function Login() {
              className='animate-fade-logo'
              height={450}
              width={450}
-             src="/volleyace full.svg"
-             alt="Bola de vôlei"
+             src="/volleyace-full.svg"
+             alt="Bola de vôlei2"
              />
           </div>
         </div>
