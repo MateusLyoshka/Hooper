@@ -57,6 +57,10 @@ export const LoginPlayer = async (formData: FormData) => {
         console.log(error);
     }
 };
+
+export const LogOutPlayer = () =>{
+    AuthService.destroySession()
+}
     // const token = jwt.sign({ playerId: player.playerId, email: player.email }, JWT_SECRET, { expiresIn: '1h' });
     // console.log("player:", player, "token:", token)
     // return {player,token}

@@ -1,5 +1,6 @@
 "use client"
 
+import { LogOutPlayer } from "@/components/API/api"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
@@ -21,7 +22,7 @@ const Header = () => {
     ? ["Profile", "Your Matches", "Create Match", "Logout"]
     : ["Profile", "Your Matches", "Logout"];
   const logout = () => {
-    console.log("Logging out...");
+    LogOutPlayer()
     router.push("/login");
   };
 
