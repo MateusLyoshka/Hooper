@@ -1,82 +1,92 @@
 import Footer from "@/components/myComponents/footer/footer";
-import Header from "@/components/myComponents/header/header"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import Header from "@/components/myComponents/header/header";
+import RankingList from "@/components/myComponents/rankinglist/list";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 const userinfo = {
-    name: "gado",
+  name: "gado",
 };
 
 const games = [
-    {
-        game:"1", teamA:"A", teamB:"B", mounth:"August", day:"12", year:"2024", time:"18:00", 
-    },
-    {game:"2", teamA:"C", teamB:"D", mounth:"August", day:"12", year:"2024", time:"21:00"}
-]
+  {
+    game: "1",
+    teamA: "A",
+    teamB: "B",
+    mounth: "August",
+    day: "12",
+    year: "2024",
+    time: "18:00",
+  },
+  {
+    game: "2",
+    teamA: "C",
+    teamB: "D",
+    mounth: "August",
+    day: "12",
+    year: "2024",
+    time: "21:00",
+  },
+];
 
-const recentGame = {teamA:"A", teamB:"B", pointsA:"80", pointsB:"75", score:"22", assists:"5", rebounds:"8"}
-
+const recentGame = {
+  teamA: "A",
+  teamB: "B",
+  pointsA: "80",
+  pointsB: "75",
+  score: "22",
+  assists: "5",
+  rebounds: "8",
+};
 
 const Home = () => {
-
-    return (
-      <div className="w-full h-screen">
-        <div>
-          <Header />
-        </div>
-        <div>
-          <div className="mt-10 p-2">
-            <Card className="p-4">
-              <CardHeader className="p-3 text-3xl">
-                Welcome {userinfo.name}
-              </CardHeader>
-              <div className="w-full bg-gray-500 h-[1px] opacity-50 mb-4"></div>
-              <CardContent>
-                <div className="">
-                  Get ready to hit the court and track your progress with Hoops.
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-          <div className="mt-10 p-2">
-            <Card className="p-4">
-              <CardHeader className="p-3 text-3xl">Upcoming matches</CardHeader>
-              <div className="w-full bg-gray-500 h-[1px] opacity-50 mb-4"></div>
-              <CardContent>
-                {games.map((itens, index) => (
-                  <div key={index} className="mt-2">
-                    <div>
-                      Game {itens.game}: Team {itens.teamA} vs Team{" "}
-                      {itens.teamB} - {itens.mounth} {itens.day}, {itens.year},{" "}
-                      {itens.time}
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
-          <div className="mt-10 p-2">
-            <Card className="p-4">
-              <CardHeader className="p-3 text-3xl">Last status</CardHeader>
-              <div className="w-full bg-gray-500 h-[1px] opacity-50 mb-4"></div>
-              <CardContent>
-                <div className="mt-2">
-                  <div className="space-y-1">
-                    <div>
-                      Last Game: Team {recentGame.teamA} {recentGame.pointsA} vs
-                      Team {recentGame.teamB} {recentGame.pointsB}
-                    </div>
-                    <div>Points Scored: {recentGame.score}</div>
-                    <div>Assists: {recentGame.assists}</div>
-                    <div>Rebounds: {recentGame.rebounds}</div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-        <div><Footer/></div>
+  return (
+    <div className="flex flex-col min-h-screen">
+      <div>
+        <Header />
       </div>
-    );
-}
 
-export default Home
+      <div className="flex-grow p-2 flex ml-28 mt-20 ">
+        <div className="flex flex-col w-full">
+          <div className=" mb-20">
+            <div>
+              <p className="text-2xl font-medium">Meus times</p>
+            </div>
+            <div className="w-full flex flex-col items-center space-y-2 mt-20 justify-center">
+              <Button className="bg-[#F2CB05] text-black p-6">
+                Procurar time
+              </Button>
+              <p>Não tem um time ainda ? entre em um!</p>
+            </div>
+          </div>
+          <div className="flex w-full flex-col mb-6">
+            <div>
+              <p className="text-2xl">Ranking global</p>
+            </div>
+            <div className="flex flex-row mt-36 justify-center space-x-20">
+              <div className="flex items-end space-x-10">
+                <div className=" bg-[#F2CB05] w-24 h-32 shadow-md"></div>
+                <div className=" bg-[#F2CB05] w-24 h-44 shadow-md"></div>
+                <div className=" bg-[#F2CB05] w-24 h-24 shadow-md"></div>
+              </div>
+              <div className="">
+                <RankingList />
+              </div>
+            </div>
+          </div>
+          <div>
+            <div>
+              <p className="text-2xl">Times regionais</p>
+            </div>
+            <div className="mt-20"></div>
+          </div>
+        </div>
+      </div>
+      <div className="mt-auto">
+        <Footer />
+      </div>
+    </div>
+  );
+};
+
+export default Home;

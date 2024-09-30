@@ -71,7 +71,7 @@ const Header = () => {
               href={`/home/${item.toLowerCase().replace(" ", "")}`}
               className={cn(
                 buttonVariants({ variant: "ghost" }),
-                "p-8 text-base rounded-none"
+                "p-8 text-base rounded-none hover:bg-white"
               )}
             >
               {item}
