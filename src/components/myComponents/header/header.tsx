@@ -3,12 +3,26 @@
 import { LogOutPlayer } from "@/components/API/api"
 import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { User } from "lucide-react"
+import { CircleUser, LogOut, Pencil, User } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu"
+import { useRef, useState } from "react"
 
 const Header = () => {
+  const [open, setOpen] = useState(false)
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
   const router = useRouter();
   const profile = {
     avatarid: "",
@@ -26,6 +40,17 @@ const Header = () => {
   const logout = () => {
     LogOutPlayer()
     router.push("/login");
+  };
+
+  const handleMouseEnter = () => {
+    clearTimeout(timeoutRef.current as NodeJS.Timeout);
+    setOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setOpen(false);
+    }, 200); // Ajuste o delay conforme necessário
   };
 
   return (
@@ -46,7 +71,7 @@ const Header = () => {
               href={`/home/${item.toLowerCase().replace(" ", "")}`}
               className={cn(
                 buttonVariants({ variant: "ghost" }),
-                "p-8   rounded-none"
+                "p-8 text-base rounded-none"
               )}
             >
               {item}
@@ -54,8 +79,38 @@ const Header = () => {
           ))}
         </div>
         <div className="flex">
-          <User />
-          <p>Bomba</p>
+          <DropdownMenu open={open} onOpenChange={setOpen} modal={false}>
+            <DropdownMenuTrigger asChild>
+              <Button className="hover:bg-white space-x-2" variant="ghost" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={(e) => e.preventDefault()}>
+                <CircleUser className="h-8 w-8" color="#1A32AC"/>
+                <p className="text-base">Mateus pereira games</p>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-full p-0 rounded-none" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+              <DropdownMenuItem className="">
+                <Link
+                  href={`/home/perfil`}
+                  className={cn(
+                    buttonVariants({ variant: "ghost" }),
+                    " w-full rounded-none border-none p-6 space-x-2 justify-start"
+                  )}
+                >
+                  <User className=""/>
+                  <p className="">Perfil</p>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button
+                  variant={"ghost"}
+                  className="w-full rounded-none border-none p-6 space-x-2 justify-start"
+                  onClick={logout}
+                > 
+                  <LogOut/>
+                  <p>Sair</p>
+                </Button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       <div className="h-1 bg-[#1A32AC]"></div>
